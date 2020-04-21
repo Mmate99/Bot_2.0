@@ -1,0 +1,50 @@
+! Books
+title,author,pageCount
+Book1,William Shakespeare,200
+Book2,William Shakespeare,250
+Book3,Penny Jordan,300
+Book4,Rex Stout,250
+
+! Cars
+brand,colour,horsepower
+Ferrari,Red,405
+Mercedes,Black,200
+Toyota,Grey,180
+Peugeot,Yellow,110
+Citroen,Black,110
+
+! Food
+name,type,calories
+Steak,main,600
+Gulash,main,450
+Tiramisu,dessert,300Car,Ferrari,405,Red
+Car,Ferrari,405,Red
+Car,Citroen,110,Black
+Car,Ferrari,405,Red
+Food,main,Steak,600
+Food,main,Gulash,450
+Car,Ferrari,405,Red
+Car,Peugeot,110,Yellow
+Car,Citroen,110,Black
+Car,110,Peugeot,Yellow
+Car,110,Citroen,Black
+Car,110,Citroen,Black
+Car,110,Black,Citroen
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,main,Steak,600
+Food,main,Gulash,450
+Car,Citroen,110,Black
+Food,main,Steak,600
+Food,main,Gulash,450
+Food,dessert,Tiramisu,300

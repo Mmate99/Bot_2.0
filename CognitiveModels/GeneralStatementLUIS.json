@@ -1,0 +1,854 @@
+{
+  "luis_schema_version": "4.0.0",
+  "versionId": "0.2",
+  "name": "GeneralStatements",
+  "desc": "",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "None"
+    },
+    {
+      "name": "Statement"
+    }
+  ],
+  "entities": [
+    {
+      "name": "bigger",
+      "roles": []
+    },
+    {
+      "name": "negation",
+      "roles": []
+    },
+    {
+      "name": "SearchKey",
+      "roles": []
+    },
+    {
+      "name": "smaller",
+      "roles": []
+    },
+    {
+      "name": "value",
+      "roles": []
+    }
+  ],
+  "composites": [
+    {
+      "name": "Value",
+      "children": [
+        "datetimeV2",
+        "personName",
+        "value",
+        "negation",
+        "bigger",
+        "smaller"
+      ],
+      "roles": []
+    }
+  ],
+  "closedLists": [],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [
+    {
+      "name": "datetimeV2",
+      "roles": []
+    },
+    {
+      "name": "personName",
+      "roles": []
+    }
+  ],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "after tomorrow",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "Value",
+          "startPos": 0,
+          "endPos": 13
+        }
+      ]
+    },
+    {
+      "text": "at 12 o'clock",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "Value",
+          "startPos": 3,
+          "endPos": 12
+        }
+      ]
+    },
+    {
+      "text": "my birthday is four weeks from now",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "Value",
+          "startPos": 15,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "my birthday was 3 weeks ago",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 0,
+          "endPos": 10
+        },
+        {
+          "entity": "Value",
+          "startPos": 16,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "the age if the kid is 11",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 17
+        },
+        {
+          "entity": "value",
+          "startPos": 22,
+          "endPos": 23
+        },
+        {
+          "entity": "Value",
+          "startPos": 22,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "the author is not shakespeare",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 9
+        },
+        {
+          "entity": "negation",
+          "startPos": 14,
+          "endPos": 16
+        },
+        {
+          "entity": "Value",
+          "startPos": 14,
+          "endPos": 16
+        },
+        {
+          "entity": "Value",
+          "startPos": 18,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "the author is william shakespeare",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 9
+        },
+        {
+          "entity": "Value",
+          "startPos": 14,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "the boy's height is bigger than 175cm",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 20,
+          "endPos": 30
+        },
+        {
+          "entity": "bigger",
+          "startPos": 20,
+          "endPos": 30
+        },
+        {
+          "entity": "value",
+          "startPos": 32,
+          "endPos": 36
+        },
+        {
+          "entity": "Value",
+          "startPos": 32,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "the brand is not ferrari",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "negation",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "value",
+          "startPos": 17,
+          "endPos": 23
+        },
+        {
+          "entity": "Value",
+          "startPos": 17,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "the building's height is more than 750m",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 20
+        },
+        {
+          "entity": "Value",
+          "startPos": 25,
+          "endPos": 33
+        },
+        {
+          "entity": "bigger",
+          "startPos": 25,
+          "endPos": 33
+        },
+        {
+          "entity": "Value",
+          "startPos": 35,
+          "endPos": 38
+        },
+        {
+          "entity": "value",
+          "startPos": 35,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "the caloriecount is less than 400",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 20,
+          "endPos": 28
+        },
+        {
+          "entity": "smaller",
+          "startPos": 20,
+          "endPos": 28
+        },
+        {
+          "entity": "Value",
+          "startPos": 30,
+          "endPos": 32
+        },
+        {
+          "entity": "value",
+          "startPos": 30,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "the colour of the car is red",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 20
+        },
+        {
+          "entity": "value",
+          "startPos": 25,
+          "endPos": 27
+        },
+        {
+          "entity": "Value",
+          "startPos": 25,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "the deadline is next month",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 11
+        },
+        {
+          "entity": "Value",
+          "startPos": 16,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "the diameter is 360",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 11
+        },
+        {
+          "entity": "value",
+          "startPos": 16,
+          "endPos": 18
+        },
+        {
+          "entity": "Value",
+          "startPos": 16,
+          "endPos": 18
+        }
+      ]
+    },
+    {
+      "text": "the diametes is smaller than 50cm",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 11
+        },
+        {
+          "entity": "Value",
+          "startPos": 16,
+          "endPos": 27
+        },
+        {
+          "entity": "smaller",
+          "startPos": 16,
+          "endPos": 27
+        },
+        {
+          "entity": "Value",
+          "startPos": 29,
+          "endPos": 32
+        },
+        {
+          "entity": "value",
+          "startPos": 29,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "the horsepower is less than 150",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 13
+        },
+        {
+          "entity": "Value",
+          "startPos": 18,
+          "endPos": 26
+        },
+        {
+          "entity": "smaller",
+          "startPos": 18,
+          "endPos": 26
+        },
+        {
+          "entity": "Value",
+          "startPos": 28,
+          "endPos": 30
+        },
+        {
+          "entity": "value",
+          "startPos": 28,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "the house is blue",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "value",
+          "startPos": 13,
+          "endPos": 16
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "the house is not blue",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "negation",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 17,
+          "endPos": 20
+        },
+        {
+          "entity": "value",
+          "startPos": 17,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "the meeting is not tomorrow",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 10
+        },
+        {
+          "entity": "negation",
+          "startPos": 15,
+          "endPos": 17
+        },
+        {
+          "entity": "Value",
+          "startPos": 15,
+          "endPos": 17
+        },
+        {
+          "entity": "Value",
+          "startPos": 19,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "the meeting is tomorrow",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 10
+        },
+        {
+          "entity": "Value",
+          "startPos": 15,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "the name of the book is star wars",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 19
+        },
+        {
+          "entity": "value",
+          "startPos": 24,
+          "endPos": 32
+        },
+        {
+          "entity": "Value",
+          "startPos": 24,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "the name of the person is stephen king",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 21
+        },
+        {
+          "entity": "value",
+          "startPos": 26,
+          "endPos": 37
+        },
+        {
+          "entity": "Value",
+          "startPos": 26,
+          "endPos": 37
+        }
+      ]
+    },
+    {
+      "text": "the page cound is 580",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 13
+        },
+        {
+          "entity": "value",
+          "startPos": 18,
+          "endPos": 20
+        },
+        {
+          "entity": "Value",
+          "startPos": 18,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "the pagecount is more than 120",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 12
+        },
+        {
+          "entity": "Value",
+          "startPos": 17,
+          "endPos": 25
+        },
+        {
+          "entity": "bigger",
+          "startPos": 17,
+          "endPos": 25
+        },
+        {
+          "entity": "Value",
+          "startPos": 27,
+          "endPos": 29
+        },
+        {
+          "entity": "value",
+          "startPos": 27,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "the pagecount is not 540",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 12
+        },
+        {
+          "entity": "negation",
+          "startPos": 17,
+          "endPos": 19
+        },
+        {
+          "entity": "Value",
+          "startPos": 17,
+          "endPos": 19
+        },
+        {
+          "entity": "Value",
+          "startPos": 21,
+          "endPos": 23
+        },
+        {
+          "entity": "value",
+          "startPos": 21,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "the price is not less than 5000 dollars",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "negation",
+          "startPos": 13,
+          "endPos": 15
+        },
+        {
+          "entity": "Value",
+          "startPos": 17,
+          "endPos": 25
+        },
+        {
+          "entity": "smaller",
+          "startPos": 17,
+          "endPos": 25
+        },
+        {
+          "entity": "value",
+          "startPos": 27,
+          "endPos": 38
+        },
+        {
+          "entity": "Value",
+          "startPos": 27,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "the requested value is not 100",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 18
+        },
+        {
+          "entity": "negation",
+          "startPos": 23,
+          "endPos": 25
+        },
+        {
+          "entity": "Value",
+          "startPos": 23,
+          "endPos": 25
+        },
+        {
+          "entity": "value",
+          "startPos": 27,
+          "endPos": 29
+        },
+        {
+          "entity": "Value",
+          "startPos": 27,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "the room is 506",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 7
+        },
+        {
+          "entity": "value",
+          "startPos": 12,
+          "endPos": 14
+        },
+        {
+          "entity": "Value",
+          "startPos": 12,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "the room number is 205",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 14
+        },
+        {
+          "entity": "value",
+          "startPos": 19,
+          "endPos": 21
+        },
+        {
+          "entity": "Value",
+          "startPos": 19,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "the roomnumber is 123",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 13
+        },
+        {
+          "entity": "value",
+          "startPos": 18,
+          "endPos": 20
+        },
+        {
+          "entity": "Value",
+          "startPos": 18,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "the searched product is food",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 19
+        },
+        {
+          "entity": "value",
+          "startPos": 24,
+          "endPos": 27
+        },
+        {
+          "entity": "Value",
+          "startPos": 24,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "the singer is shakira",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 9
+        },
+        {
+          "entity": "value",
+          "startPos": 14,
+          "endPos": 20
+        },
+        {
+          "entity": "Value",
+          "startPos": 14,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "the type isn't main",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 7
+        },
+        {
+          "entity": "negation",
+          "startPos": 12,
+          "endPos": 13
+        },
+        {
+          "entity": "Value",
+          "startPos": 12,
+          "endPos": 13
+        },
+        {
+          "entity": "Value",
+          "startPos": 15,
+          "endPos": 18
+        },
+        {
+          "entity": "value",
+          "startPos": 15,
+          "endPos": 18
+        }
+      ]
+    }
+  ],
+  "settings": []
+}
