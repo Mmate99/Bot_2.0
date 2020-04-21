@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.Luis;
-
 namespace CoreBot
 {
     public partial class GeneralStatemenHandler: IRecognizerConvert
@@ -31,9 +30,13 @@ namespace CoreBot
             // Simple entities
             public string[] SearchKey;
 
+            public string[] and;
+
             public string[] bigger;
 
             public string[] negation;
+
+            public string[] or;
 
             public string[] smaller;
 
@@ -72,9 +75,11 @@ namespace CoreBot
             {
                 public InstanceData[] SearchKey;
                 public InstanceData[] Value;
+                public InstanceData[] and;
                 public InstanceData[] bigger;
                 public InstanceData[] datetime;
                 public InstanceData[] negation;
+                public InstanceData[] or;
                 public InstanceData[] personName;
                 public InstanceData[] smaller;
                 public InstanceData[] value;

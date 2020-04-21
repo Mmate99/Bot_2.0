@@ -22,7 +22,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly LuisRecogniser _luisRecognizer;
         protected readonly ILogger Logger;
         private readonly Database database;
-        private Dictionary<string, LuisValue> keyValuePairs = new Dictionary<string, LuisValue>();
+        private Dictionary<string, LuisClause> keyValuePairs = new Dictionary<string, LuisClause>();
+        private Dictionary<LuisClause, string> clauses = new Dictionary<LuisClause, string>();
 
         // Dependency injection uses this constructor to instantiate MainDialog
         public MainDialog(LuisRecogniser luisRecognizer, ILogger<MainDialog> logger)
@@ -47,7 +48,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             bool ret = true;
             bool found = false;
 
-            foreach (KeyValuePair<string, LuisValue> pair in keyValuePairs) {
+            foreach (KeyValuePair<string, LuisClause> pair in keyValuePairs) {
                 var prop = d.GetType().GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                 found = prop != null;
 
@@ -83,24 +84,86 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     if (luisResult.Entities.Value[0] != null) {
 
                         var keys = luisResult.Entities.SearchKey;
-                        int keysIter = 0;
-                        var values = luisResult.Entities.Value;
+                        var Luisvalues = luisResult.Entities.Value;
 
-                        for(int i = 0; i < luisResult.Entities.Value.Length; i++) {
-                            var value = values[i].datetime != null ? values[i].datetime[0].Expressions : values[i].personName ?? values[i].value;
+                        string text = luisResult.Text;
+                        string[] words = text.Split(" ");
+                        List<string> mainStatementValues = new List<string>();
+                        Dictionary<string, GeneralStatemenHandler._Entities.ValueClass> otherValues = new Dictionary<string, GeneralStatemenHandler._Entities.ValueClass>();
 
-                            if (value != null) {
-                                LuisValue lv = new LuisValue(value[0]);
+                        string searchKey = null;
+                        string andOr = "";
+                        int keyCount = 0;
+                        bool negation = false;
+                        bool bigger = false;
+                        bool smaller = false;
 
-                                if (i > 0) {
-                                    if (values[i-1].negation != null) lv.Negated = true;
-                                    if (values[i-1].bigger != null) lv.Bigger = true;
-                                    if (values[i-1].smaller != null) lv.Smaller = true;
-                                }
+                        for (int i = 0; i < Luisvalues.Length; i++) {
+                            var val = Luisvalues[i].datetime != null ? Luisvalues[i].datetime[0].Expressions : Luisvalues[i].personName ?? Luisvalues[i].value;
+                            var other = Luisvalues[i].bigger ?? Luisvalues[i].smaller ?? Luisvalues[i].negation;
 
-                                keyValuePairs.Add(keys[keysIter++], lv);
+                            if (val != null) {
+                                mainStatementValues.Add(val[0]);
+                            }
+                            else if(other != null) {
+                                otherValues.Add(other[0], Luisvalues[i]);
                             }
                         }
+
+                        foreach (string word in words) {
+                            if (keys.Contains(word)) {
+                                searchKey = word;
+                            }
+
+                            else if (mainStatementValues[keyCount].Contains(word.ToLower()) && searchKey != null) {
+                                LuisClause lc = new LuisClause(searchKey, mainStatementValues[keyCount]);
+                                lc.Bigger = bigger;
+                                lc.Smaller = smaller;
+                                lc.Negated = negation;
+
+                                clauses.Add(lc, andOr);
+
+                                searchKey = null;
+                                negation = false;
+                                bigger = false;
+                                smaller = false;
+                                keyCount++;
+                            }
+
+                            else {
+                                if (word.Equals("and") || word.Equals("or")) {
+                                    andOr = word;
+                                }
+                                else {
+                                    var k = otherValues.Keys.Where(key => key.Contains(word));
+                                    if (k.Count() != 0) {
+                                        var luisValue = otherValues[k.First()];
+
+                                        negation = luisValue.negation != null;
+                                        bigger = luisValue.bigger != null;
+                                        smaller = luisValue.smaller != null;
+                                    }
+                                }
+                            }
+                        }
+
+                        //string text = luisResult.Entities.
+
+                        //for (int i = 0; i < luisResult.Entities.Value.Length; i++) {
+                        //    var value = Luisvalues[i].datetime != null ? Luisvalues[i].datetime[0].Expressions : Luisvalues[i].personName ?? Luisvalues[i].value;
+
+                        //    if (value != null) {
+                        //        LuisClause lv = new LuisClause(value[0]);
+
+                        //        if (i > 0) {
+                        //            if (Luisvalues[i - 1].negation != null) lv.Negated = true;
+                        //            if (Luisvalues[i - 1].bigger != null) lv.Bigger = true;
+                        //            if (Luisvalues[i - 1].smaller != null) lv.Smaller = true;
+                        //        }
+
+                        //        keyValuePairs.Add(keys[keysIter++], lv);
+                        //    }
+                        //}
 
                         var list = database.getData();
                         List<IData> res = list;
@@ -113,7 +176,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         if (res.Count == 0) {
                             string propNotFound = "Can't find any records with";
 
-                            foreach (KeyValuePair<string, LuisValue> pair in keyValuePairs) {
+                            foreach (KeyValuePair<string, LuisClause> pair in keyValuePairs) {
                                 propNotFound += " property: " + pair.Key + ", value: " + pair.Value.Value + " and";
                             }
 
@@ -165,7 +228,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // Restart the main dialog with a different message the second time around
             var promptMessage = "Are you looking for something else too?";
             //query mentése....
-            keyValuePairs = new Dictionary<string, LuisValue>();
+            keyValuePairs = new Dictionary<string, LuisClause>();
             return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
         }
     }

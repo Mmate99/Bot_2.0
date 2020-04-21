@@ -15,11 +15,19 @@
   ],
   "entities": [
     {
+      "name": "and",
+      "roles": []
+    },
+    {
       "name": "bigger",
       "roles": []
     },
     {
       "name": "negation",
+      "roles": []
+    },
+    {
+      "name": "or",
       "roles": []
     },
     {
@@ -78,6 +86,17 @@
       ]
     },
     {
+      "text": "and",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "and",
+          "startPos": 0,
+          "endPos": 2
+        }
+      ]
+    },
+    {
       "text": "at 12 o'clock",
       "intent": "Statement",
       "entities": [
@@ -116,6 +135,17 @@
       ]
     },
     {
+      "text": "or",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "or",
+          "startPos": 0,
+          "endPos": 1
+        }
+      ]
+    },
+    {
       "text": "the age if the kid is 11",
       "intent": "Statement",
       "entities": [
@@ -133,6 +163,47 @@
           "entity": "Value",
           "startPos": 22,
           "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "the age is 54 and the haircolor is brown",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 6
+        },
+        {
+          "entity": "value",
+          "startPos": 11,
+          "endPos": 12
+        },
+        {
+          "entity": "Value",
+          "startPos": 11,
+          "endPos": 12
+        },
+        {
+          "entity": "and",
+          "startPos": 14,
+          "endPos": 16
+        },
+        {
+          "entity": "SearchKey",
+          "startPos": 22,
+          "endPos": 30
+        },
+        {
+          "entity": "Value",
+          "startPos": 35,
+          "endPos": 39
+        },
+        {
+          "entity": "value",
+          "startPos": 35,
+          "endPos": 39
         }
       ]
     },
@@ -159,6 +230,52 @@
           "entity": "Value",
           "startPos": 18,
           "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "the author is shakespeare or the pagecount is more than 300",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 9
+        },
+        {
+          "entity": "Value",
+          "startPos": 14,
+          "endPos": 24
+        },
+        {
+          "entity": "or",
+          "startPos": 26,
+          "endPos": 27
+        },
+        {
+          "entity": "SearchKey",
+          "startPos": 33,
+          "endPos": 41
+        },
+        {
+          "entity": "Value",
+          "startPos": 46,
+          "endPos": 54
+        },
+        {
+          "entity": "bigger",
+          "startPos": 46,
+          "endPos": 54
+        },
+        {
+          "entity": "Value",
+          "startPos": 56,
+          "endPos": 58
+        },
+        {
+          "entity": "value",
+          "startPos": 56,
+          "endPos": 58
         }
       ]
     },
@@ -206,6 +323,47 @@
           "entity": "Value",
           "startPos": 32,
           "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "the brand is citroen or the color is black",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "value",
+          "startPos": 13,
+          "endPos": 19
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 19
+        },
+        {
+          "entity": "or",
+          "startPos": 21,
+          "endPos": 22
+        },
+        {
+          "entity": "SearchKey",
+          "startPos": 28,
+          "endPos": 32
+        },
+        {
+          "entity": "Value",
+          "startPos": 37,
+          "endPos": 41
+        },
+        {
+          "entity": "value",
+          "startPos": 37,
+          "endPos": 41
         }
       ]
     },
@@ -303,6 +461,37 @@
       ]
     },
     {
+      "text": "the calories is more than 300",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 11
+        },
+        {
+          "entity": "Value",
+          "startPos": 16,
+          "endPos": 24
+        },
+        {
+          "entity": "bigger",
+          "startPos": 16,
+          "endPos": 24
+        },
+        {
+          "entity": "Value",
+          "startPos": 26,
+          "endPos": 28
+        },
+        {
+          "entity": "value",
+          "startPos": 26,
+          "endPos": 28
+        }
+      ]
+    },
+    {
       "text": "the colour of the car is red",
       "intent": "Statement",
       "entities": [
@@ -370,22 +559,22 @@
           "endPos": 11
         },
         {
-          "entity": "Value",
-          "startPos": 16,
-          "endPos": 27
-        },
-        {
           "entity": "smaller",
           "startPos": 16,
           "endPos": 27
         },
         {
           "entity": "Value",
+          "startPos": 16,
+          "endPos": 27
+        },
+        {
+          "entity": "value",
           "startPos": 29,
           "endPos": 32
         },
         {
-          "entity": "value",
+          "entity": "Value",
           "startPos": 29,
           "endPos": 32
         }
@@ -642,6 +831,37 @@
       ]
     },
     {
+      "text": "the price is more than 500",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 8
+        },
+        {
+          "entity": "Value",
+          "startPos": 13,
+          "endPos": 21
+        },
+        {
+          "entity": "bigger",
+          "startPos": 13,
+          "endPos": 21
+        },
+        {
+          "entity": "Value",
+          "startPos": 23,
+          "endPos": 25
+        },
+        {
+          "entity": "value",
+          "startPos": 23,
+          "endPos": 25
+        }
+      ]
+    },
+    {
       "text": "the price is not less than 5000 dollars",
       "intent": "Statement",
       "entities": [
@@ -846,6 +1066,57 @@
           "entity": "value",
           "startPos": 15,
           "endPos": 18
+        }
+      ]
+    },
+    {
+      "text": "the weight is 500kg and the price is less than 1000 usd",
+      "intent": "Statement",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 4,
+          "endPos": 9
+        },
+        {
+          "entity": "value",
+          "startPos": 14,
+          "endPos": 18
+        },
+        {
+          "entity": "Value",
+          "startPos": 14,
+          "endPos": 18
+        },
+        {
+          "entity": "and",
+          "startPos": 20,
+          "endPos": 22
+        },
+        {
+          "entity": "SearchKey",
+          "startPos": 28,
+          "endPos": 32
+        },
+        {
+          "entity": "Value",
+          "startPos": 37,
+          "endPos": 45
+        },
+        {
+          "entity": "smaller",
+          "startPos": 37,
+          "endPos": 45
+        },
+        {
+          "entity": "Value",
+          "startPos": 47,
+          "endPos": 54
+        },
+        {
+          "entity": "value",
+          "startPos": 47,
+          "endPos": 54
         }
       ]
     }
