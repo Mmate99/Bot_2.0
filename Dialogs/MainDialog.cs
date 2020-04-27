@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot;
-using CoreBot.CognitiveModels;
+using CoreBot.Clause;
 using CoreBot.Database;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -44,7 +44,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
 
         private bool findData(IData d) {
-            bool ret = false;        //alapból miért true?
+            bool ret = false;
             bool found = false;
 
             foreach (KeyValuePair<LuisClause, string> pair in clauses) {
@@ -65,6 +65,43 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return ret;
         }
 
+        private async Task handleResultsAsync(List<IData> res, WaterfallStepContext stepContext) {
+            if (res.Count == 0) {
+                string propNotFound = "Can't find any records with";
+
+                foreach (KeyValuePair<LuisClause, string> pair in clauses) {
+                    propNotFound += " property: " + pair.Key.SearchKey + ", value: " + pair.Key.Value + " and";
+                }
+
+                Regex regex = new Regex("(\\s+(and)\\s*)$");
+                propNotFound = regex.Replace(propNotFound, "");
+
+                var pnf = MessageFactory.Text(propNotFound);
+                await stepContext.Context.SendActivityAsync(pnf);
+                return;
+            }
+
+            foreach (var data in res) {
+                string Class = data.ToString().Remove(0, 17);
+                string Props = "";
+
+                string type = "Class: " + Class + Environment.NewLine;
+                string propsWithValues = "";
+
+                var props = data.GetType().GetProperties();
+                foreach (var p in props) {
+                    propsWithValues += p.Name + ": " + p.GetValue(data).ToString() + Environment.NewLine;
+                    Props += p.GetValue(data).ToString() + ",";
+                }
+
+                Props = Props.Remove(Props.Length - 1);
+
+                string txt = type + propsWithValues;
+                var msg = MessageFactory.Text(txt);
+                await stepContext.Context.SendActivityAsync(msg);
+            }
+        }
+
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var messageText = stepContext.Options?.ToString() ?? "Give me 'something is someting' sentences!";
@@ -82,112 +119,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                     if (luisResult.Entities.Value[0] != null) {
 
-                        var keys = luisResult.Entities.SearchKey;
-                        var Luisvalues = luisResult.Entities.Value;
+                        ClauseHandler ch = new ClauseHandler(luisResult, clauses);
 
-                        string text = luisResult.Text;
-                        string[] words = text.Split(" ");
-                        List<string> mainStatementValues = new List<string>();
-                        Dictionary<string, GeneralStatemenHandler._Entities.ValueClass> otherValues = new Dictionary<string, GeneralStatemenHandler._Entities.ValueClass>();
-
-                        string searchKey = null;
-                        string andOr = "";
-                        int keyCount = 0;
-                        bool negation = false;
-                        bool bigger = false;
-                        bool smaller = false;
-
-                        for (int i = 0; i < Luisvalues.Length; i++) {
-                            var val = Luisvalues[i].datetime != null ? Luisvalues[i].datetime[0].Expressions : Luisvalues[i].personName ?? Luisvalues[i].value;
-                            var other = Luisvalues[i].bigger ?? Luisvalues[i].smaller ?? Luisvalues[i].negation;
-
-                            if (val != null) {
-                                mainStatementValues.Add(val[0]);
-                            }
-                            else if(other != null) {
-                                otherValues.Add(other[0], Luisvalues[i]);
-                            }
-                        }
-
-                        foreach (string word in words) {
-                            if (keys.Contains(word)) {
-                                searchKey = word;
-                            }
-
-                            else if (mainStatementValues[keyCount].Contains(word.ToLower()) && searchKey != null) {
-                                LuisClause lc = new LuisClause(searchKey, mainStatementValues[keyCount]);
-                                lc.Bigger = bigger;
-                                lc.Smaller = smaller;
-                                lc.Negated = negation;
-
-                                clauses.Add(lc, andOr);
-
-                                searchKey = null;
-                                negation = false;
-                                bigger = false;
-                                smaller = false;
-                                keyCount = keyCount < keys.Count()-1 ? keyCount + 1 : keyCount;
-                            }
-
-                            else {
-                                if (word.Equals("and") || word.Equals("or")) {
-                                    andOr = word;
-                                }
-                                else {
-                                    var k = otherValues.Keys.Where(key => key.Contains(word));
-                                    if (k.Count() != 0) {
-                                        var luisValue = otherValues[k.First()];
-
-                                        negation = luisValue.negation != null;
-                                        bigger = luisValue.bigger != null;
-                                        smaller = luisValue.smaller != null;
-                                    }
-                                }
-                            }
-                        }
-
-                        var list = database.getData();
+                        List<IData> list = database.getData();
                         List<IData> res = list;
 
-                        Predicate<IData> pred = findData;
-                        var foundItems = list.FindAll(findData);
-
+                        List<IData> foundItems = list.FindAll(findData);
                         res = res.Intersect(foundItems).ToList();
-
-                        if (res.Count == 0) {
-                            string propNotFound = "Can't find any records with";
-
-                            foreach (KeyValuePair<LuisClause, string> pair in clauses) {
-                                propNotFound += " property: " + pair.Key.SearchKey + ", value: " + pair.Key.Value + " and";
-                            }
-
-                            Regex regex = new Regex("(\\s+(and)\\s*)$");
-                            propNotFound = regex.Replace(propNotFound, "");
-
-                            var pnf = MessageFactory.Text(propNotFound);
-                            await stepContext.Context.SendActivityAsync(pnf);
-                            break;
-                        }
-
-                        foreach (var data in res) {
-                            string Class = data.ToString().Remove(0, 17);
-                            string Props = "";
-
-                            string type = "Class: " + Class + Environment.NewLine;
-                            string propsWithValues = "";
-
-                            var props = data.GetType().GetProperties();
-                            foreach (var p in props) {
-                                propsWithValues += p.Name + ": " + p.GetValue(data).ToString() + Environment.NewLine;
-                                Props += p.GetValue(data).ToString() + ",";
-                            }
-
-                            Props = Props.Remove(Props.Length - 1);
-
-                            string txt = type + propsWithValues;
-                            var msg = MessageFactory.Text(txt);
-                            await stepContext.Context.SendActivityAsync(msg);
-                        }
+                        await handleResultsAsync(res, stepContext);   
                     }
 
                     break;
