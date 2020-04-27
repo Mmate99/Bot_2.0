@@ -13,7 +13,7 @@ namespace CoreBot.Clause {
 
         private string searchKey = null;
         private string andOr = "";
-        private int keyCount = 0;
+        private int valueCount = 0;
         private bool negation = false;
         private bool bigger = false;
         private bool smaller = false;
@@ -43,27 +43,43 @@ namespace CoreBot.Clause {
             }
         }
 
+        private bool mainStatementValuesContainsWord(string word) {
+            foreach(string statementWord in mainStatementValues) {
+                string firstWordOnly = statementWord.Split(" ")[0];        //"William Shakespeare" => "William", hogy később ne legyen kétszer is hozzáadva a clauses-hez!
+                if (firstWordOnly.Contains(word)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void createClauses() {
             sortWords();
 
-            foreach (string word in words) {
+            for(int i = 0; i < words.Length; i++) {
+                string word = words[i];
+
                 if (keys.Contains(word)) {
                     searchKey = word;
                 }
 
-                else if (mainStatementValues[keyCount].Contains(word.ToLower()) && searchKey != null) {
-                    LuisClause lc = new LuisClause(searchKey, mainStatementValues[keyCount]);
+                else if (mainStatementValuesContainsWord(word.ToLower())) {
+                    LuisClause lc = new LuisClause(searchKey, mainStatementValues[valueCount]);
                     lc.Bigger = bigger;
                     lc.Smaller = smaller;
                     lc.Negated = negation;
 
+                    if (words[i - 1].Equals("and") || words[i - 1].Equals("or")) {
+                        andOr = words[i - 1];
+                    }
+
                     clauses.Add(lc, andOr);
 
-                    searchKey = null;
                     negation = false;
                     bigger = false;
                     smaller = false;
-                    keyCount = keyCount < keys.Count() - 1 ? keyCount + 1 : keyCount;
+                    valueCount++;
                 }
 
                 else {
