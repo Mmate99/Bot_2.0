@@ -22,7 +22,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly LuisRecogniser _luisRecognizer;
         protected readonly ILogger Logger;
         private readonly Database database;
-        private Dictionary<string, LuisClause> keyValuePairs = new Dictionary<string, LuisClause>();
         private Dictionary<LuisClause, string> clauses = new Dictionary<LuisClause, string>();
 
         // Dependency injection uses this constructor to instantiate MainDialog
@@ -45,22 +44,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
 
         private bool findData(IData d) {
-            bool ret = true;
+            bool ret = false;        //alapból miért true?
             bool found = false;
 
-            foreach (KeyValuePair<string, LuisClause> pair in keyValuePairs) {
-                var prop = d.GetType().GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            foreach (KeyValuePair<LuisClause, string> pair in clauses) {
+                var prop = d.GetType().GetProperty(pair.Key.SearchKey, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                 found = prop != null;
 
-                if (pair.Value.Smaller) found = found && Convert.ToDouble(prop.GetValue(d)) < double.Parse(pair.Value.Value);
+                if (pair.Key.Smaller) found = found && Convert.ToDouble(prop.GetValue(d)) < double.Parse(pair.Key.Value);
 
-                else if (pair.Value.Bigger) found = found && Convert.ToDouble(prop.GetValue(d)) > double.Parse(pair.Value.Value);
+                else if (pair.Key.Bigger) found = found && Convert.ToDouble(prop.GetValue(d)) > double.Parse(pair.Key.Value);
 
-                else if (pair.Value.Negated) found = found && prop.GetValue(d).ToString().ToUpper() != pair.Value.Value.ToUpper();
+                else if (pair.Key.Negated) found = found && prop.GetValue(d).ToString().ToUpper() != pair.Key.Value.ToUpper();
 
-                else found = found && prop.GetValue(d).ToString().ToUpper() == pair.Value.Value.ToUpper();
+                else found = found && prop.GetValue(d).ToString().ToUpper() == pair.Key.Value.ToUpper();
 
-                ret = ret && found;
+                ret = pair.Value.Equals("and") ? ret && found : ret || found;
             }
 
             return ret;
@@ -127,7 +126,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                                 negation = false;
                                 bigger = false;
                                 smaller = false;
-                                keyCount++;
+                                keyCount = keyCount < keys.Count()-1 ? keyCount + 1 : keyCount;
                             }
 
                             else {
@@ -147,24 +146,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                             }
                         }
 
-                        //string text = luisResult.Entities.
-
-                        //for (int i = 0; i < luisResult.Entities.Value.Length; i++) {
-                        //    var value = Luisvalues[i].datetime != null ? Luisvalues[i].datetime[0].Expressions : Luisvalues[i].personName ?? Luisvalues[i].value;
-
-                        //    if (value != null) {
-                        //        LuisClause lv = new LuisClause(value[0]);
-
-                        //        if (i > 0) {
-                        //            if (Luisvalues[i - 1].negation != null) lv.Negated = true;
-                        //            if (Luisvalues[i - 1].bigger != null) lv.Bigger = true;
-                        //            if (Luisvalues[i - 1].smaller != null) lv.Smaller = true;
-                        //        }
-
-                        //        keyValuePairs.Add(keys[keysIter++], lv);
-                        //    }
-                        //}
-
                         var list = database.getData();
                         List<IData> res = list;
 
@@ -176,8 +157,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         if (res.Count == 0) {
                             string propNotFound = "Can't find any records with";
 
-                            foreach (KeyValuePair<string, LuisClause> pair in keyValuePairs) {
-                                propNotFound += " property: " + pair.Key + ", value: " + pair.Value.Value + " and";
+                            foreach (KeyValuePair<LuisClause, string> pair in clauses) {
+                                propNotFound += " property: " + pair.Key.SearchKey + ", value: " + pair.Key.Value + " and";
                             }
 
                             Regex regex = new Regex("(\\s+(and)\\s*)$");
@@ -228,7 +209,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // Restart the main dialog with a different message the second time around
             var promptMessage = "Are you looking for something else too?";
             //query mentése....
-            keyValuePairs = new Dictionary<string, LuisClause>();
+            clauses = new Dictionary<LuisClause, string>();
             return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
         }
     }
