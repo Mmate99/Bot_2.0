@@ -10,6 +10,9 @@
       "name": "None"
     },
     {
+      "name": "QueryManagment"
+    },
+    {
       "name": "Statement"
     }
   ],
@@ -108,6 +111,22 @@
       ]
     },
     {
+      "text": "list everything",
+      "intent": "QueryManagment",
+      "entities": []
+    },
+    {
+      "text": "list the queries",
+      "intent": "QueryManagment",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 9,
+          "endPos": 15
+        }
+      ]
+    },
+    {
       "text": "my birthday is four weeks from now",
       "intent": "Statement",
       "entities": [
@@ -142,6 +161,17 @@
           "entity": "or",
           "startPos": 0,
           "endPos": 1
+        }
+      ]
+    },
+    {
+      "text": "show me the queries",
+      "intent": "QueryManagment",
+      "entities": [
+        {
+          "entity": "SearchKey",
+          "startPos": 12,
+          "endPos": 18
         }
       ]
     },
@@ -1119,6 +1149,11 @@
           "endPos": 54
         }
       ]
+    },
+    {
+      "text": "where are we so far?",
+      "intent": "QueryManagment",
+      "entities": []
     }
   ],
   "settings": []

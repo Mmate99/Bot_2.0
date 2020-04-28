@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.Luis;
-namespace CoreBot
+namespace CoreBot.CognitiveModels
 {
     public partial class GeneralStatemenHandler: IRecognizerConvert
     {
@@ -20,6 +20,7 @@ namespace CoreBot
 
         public enum Intent {
             None, 
+            QueryManagment, 
             Statement
         };
         [JsonProperty("intents")]
