@@ -10,12 +10,14 @@ namespace CoreBot.Database {
         private string text;
 
         public Query(Dictionary<LuisClause, string> cl, string txt) {
-            int n = 1;
-            foreach(var clause in cl) {
-                clauses.Add(n++, clause.Key);
-            }
+            if (cl != null) {
+                int n = 1;
+                foreach (var clause in cl) {
+                    clauses.Add(n++, clause.Key);
+                }
 
-            text = txt;
+                text = txt;
+            }
         }
 
         public Dictionary<int, LuisClause> getClauses() {

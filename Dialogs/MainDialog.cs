@@ -25,7 +25,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         private readonly Database database;
         private Dictionary<LuisClause, string> clauses = new Dictionary<LuisClause, string>();
-        private Dictionary<int, Query> queries = new Dictionary<int, Query>();
+        private static Dictionary<int, Query> queries = new Dictionary<int, Query>();
         private int queryID = 1;
         private string queryText;
 
@@ -89,7 +89,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         string queryClauses = "";
 
                         foreach(var cl in q.Value.getClauses()) {
-                            queryClauses += "Clause ID: " + cl.Key.ToString() + " searchkey: " + cl.Value.SearchKey + ", value: " + cl.Value.Value + Environment.NewLine;
+                            queryClauses += "Clause ID: " + cl.Key.ToString() + " searchkey: " + cl.Value.SearchKey;
+                            queryClauses += cl.Value.Negated != false ? ", not equals" : "";
+                            queryClauses += cl.Value.Smaller != false ? ", smaller than" : "";
+                            queryClauses += cl.Value.Bigger != false ? ", bigger than" : "";
+                            queryClauses += ", value: " + cl.Value.Value + Environment.NewLine;
                         }
 
                         var msg = MessageFactory.Text(queryId + queryText + queryClauses);
@@ -176,6 +180,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var msg = MessageFactory.Text(txt);
                 await stepContext.Context.SendActivityAsync(msg);
             }
+        }
+
+        public static Dictionary<int, Query> getQueries() {
+            return queries;
         }
     }
 }
